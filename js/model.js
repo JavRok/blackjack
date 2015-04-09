@@ -123,6 +123,44 @@ var pair = [
     var appView = new AppView();*/
 
 
+    // Keyboard events: detect numbers pressed
+    var key0 = 48, numpad0 = 96;
+
+    document.body.addEventListener('keydown', function(evt) {
+        var key = evt.keyCode, card = -1,
+            player;
+
+        // Numeric keys
+        if (key >= key0 && key < key0+11) {
+            card = key - key0;
+        } else
+        // Numpad
+        if (key >= numpad0 && key < numpad0+11) {
+            card = key - numpad0;
+        }
+
+        if (card > -1) {
+            // Trigger click and highlight button
+            if (dealer.get('card') > 0) {
+                player = document.getElementById("yours");
+            } else {
+                player = document.getElementById("dealer");
+            }
+
+            var $button = $("button[value='"+card+"']", $(player));
+            $button.trigger('click').addClass('clicked').parent().focus();
+
+            setTimeout(function() {
+                $button.removeClass('clicked');
+            }, 500);
+
+        }
+
+
+    }, false);
+
+
+
     /*******************    DEALER CARD     *****************/
 
     var Dealer = Backbone.Model.extend({
@@ -290,7 +328,7 @@ var pair = [
                 this.$el.text("");
                 return;
             }
-            if (dealerCard) {
+            if (dealerCard && userTotal < 22) {
                 var play;
                 if (this.user.get('pairs')) {
                     play = playMap[pair[userTotal][dealerCard]];

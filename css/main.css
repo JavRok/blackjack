@@ -97,21 +97,49 @@ textarea {
 
 
 
-
 .wrapper {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
+    background: forestgreen;
+    padding:1em;
+    border: 1px solid darkslategrey;
+    border-radius: 4px;
+    color: white;
 }
 
-#action {
-    float: right;
-    width: 150px;
+.action, .count, #dealer, #yours {
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    padding: 1em;
+    height: 12em;
+    margin: 1%;
+}
+
+.action, .count {
+    width: 40%;
+    border: 1px solid #ffff00;
+}
+
+#dealer, #yours {
+    width: 55%;
+    border: 1px dashed antiquewhite;
+}
+
+#dealer:focus, #yours:focus {
+    border: 2px solid red;
+    outline: none;
 }
 
 .dealer-card, .your-card {
-    color: darkgreen;
+    color: yellow;
     font-size: 1.3em;
+}
+
+#count {
+    color: #FF6666
 }
 
 .as {
@@ -122,9 +150,29 @@ textarea {
     font-size: 1rem;
 }
 
+button {
+    background: white;
+    color: black;
+}
+button.clicked {
+    background: red;
+    color: white;
+    border-color: darkslategrey;
+}
 
 
+/* Gradient */
+.wrapper {
+    background: #009100; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  #009100 45%, #004000 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(45%,#009100), color-stop(100%,#004000)); /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover,  #009100 45%,#004000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover,  #009100 45%,#004000 100%); /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover,  #009100 45%,#004000 100%); /* IE10+ */
+    background: radial-gradient(ellipse at center,  #009100 45%,#004000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#009100', endColorstr='#004000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
+}
 
 
 
