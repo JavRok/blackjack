@@ -20,55 +20,70 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="wrapper">
+        <div class="board ">
 
             <div class="backbone"></div>
 
             <p>Blackjack Strategy</p>
 
+            <div class="wrapper clearfix">
+                <section id="dealer" tabindex="1" autofocus>
+                    <h3>Dealer card <span class="dealer-card"></span></h3>
 
-            <section id="dealer" tabindex="1" autofocus>
-                <h3>Dealer card <span class="dealer-card"></span></h3>
+                    <button class="as" value="1">1</button>
+                    <button value="2">2</button>
+                    <button value="3">3</button>
+                    <button value="4">4</button>
+                    <button value="5">5</button>
+                    <button value="6">6</button>
+                    <button value="7">7</button>
+                    <button value="8">8</button>
+                    <button value="9">9</button>
+                    <button value="0">10</button>
+                </section>
 
-                <button class="as" value="1">1</button>
-                <button value="2">2</button>
-                <button value="3">3</button>
-                <button value="4">4</button>
-                <button value="5">5</button>
-                <button value="6">6</button>
-                <button value="7">7</button>
-                <button value="8">8</button>
-                <button value="9">9</button>
-                <button value="0">10</button>
-            </section>
+                <section class="action">
+                    <h2>Action</h2>
+                    <h3 id="action">Nada</h3>
+                </section>
 
-            <section class="action">
-                <h2>Action</h2>
-                <h3 id="action">Nada</h3>
-            </section>
+                <section id="count">
+                    <h2>Count</h2>
+                    <h3 class="count">0</h3>
+                    <button class="shuffle">SHUFFLE</button>
+                </section>
 
-            <section id="yours" tabindex="2">
-                <h3>Your cards <span class="your-card"></span></h3>
-                <button class="as" value="1">1</button>
-                <button value="2">2</button>
-                <button value="3">3</button>
-                <button value="4">4</button>
-                <button value="5">5</button>
-                <button value="6">6</button>
-                <button value="7">7</button>
-                <button value="8">8</button>
-                <button value="9">9</button>
-                <button value="0">10</button>
-                <br><br>
-                <button class="clear">CLEAR</button>
-            </section>
+                <section id="yours" tabindex="2">
+                    <h3>Your cards <span class="your-card"></span></h3>
+                    <button class="as" value="1">1</button>
+                    <button value="2">2</button>
+                    <button value="3">3</button>
+                    <button value="4">4</button>
+                    <button value="5">5</button>
+                    <button value="6">6</button>
+                    <button value="7">7</button>
+                    <button value="8">8</button>
+                    <button value="9">9</button>
+                    <button value="0">10</button>
+                    <br><br>
+                    <button class="clear">CLEAR</button>
+                </section>
 
 
-            <section class="count">
-                <h2>Count</h2>
-                <h3 id="count">0</h3>
-                <button class="shuffle">SHUFFLE</button>
-            </section>
+                <section id="others" tabindex="3">
+                    <h3>Others cards</h3>
+                    <button class="as" value="1">1</button>
+                    <button value="2">2</button>
+                    <button value="3">3</button>
+                    <button value="4">4</button>
+                    <button value="5">5</button>
+                    <button value="6">6</button>
+                    <button value="7">7</button>
+                    <button value="8">8</button>
+                    <button value="9">9</button>
+                    <button value="0">10</button>
+                </section>
+            </div>
 
         </div>
 

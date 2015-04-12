@@ -123,12 +123,34 @@ var pair = [
     var appView = new AppView();*/
 
 
+/***** PUT KEY BINDINGS TO A BACKBONE VIEW/MODEL **********/
+
     // Keyboard events: detect numbers pressed
     var key0 = 48, numpad0 = 96;
+
+    // Autofocus won't work on normal elements (not form)
+    document.getElementById("dealer").focus();
 
     document.body.addEventListener('keydown', function(evt) {
         var key = evt.keyCode, card = -1,
             player;
+
+        // Right arrow to focus next section
+        if (key === 39) {
+            var currentIndex = parseInt(document.activeElement.getAttribute('tabindex'));
+            var $nextTabElement = $('[tabindex='+ (currentIndex+1) +']');
+            if ($nextTabElement.length)
+                $nextTabElement.focus();
+            return;
+        } else if (key === 37) {
+            // Left arrow to focus previous section
+            var currentIndex = parseInt(document.activeElement.getAttribute('tabindex'));
+            var $previousTabElement = $('[tabindex='+ (currentIndex-1) +']');
+            if ($previousTabElement.length)
+                $previousTabElement.focus();
+            return;
+        }
+
 
         // Numeric keys
         if (key >= key0 && key < key0+11) {
@@ -142,17 +164,21 @@ var pair = [
         if (card > -1) {
             // Trigger click and highlight button
             if (dealer.get('card') > 0) {
-                player = document.getElementById("yours");
+                player = document.activeElement;
             } else {
                 player = document.getElementById("dealer");
+                document.getElementById("yours").focus();
             }
 
             var $button = $("button[value='"+card+"']", $(player));
-            $button.trigger('click').addClass('clicked').parent().focus();
+            $button.trigger('click').addClass('clicked'); // .parent().focus();
+
+            // Add card to the count
+            count.addCard(card);
 
             setTimeout(function() {
                 $button.removeClass('clicked');
-            }, 500);
+            }, 300);
 
         }
 
@@ -345,10 +371,56 @@ var pair = [
     });
 
 
+
+    /********************     COUNT     *****************/
+    // Receives both models Dealer & User as params
+
+    var Count = Backbone.Model.extend({
+        defaults: {
+            count: 0,
+            nCards: 0
+        },
+        addCard: function(card) {
+            if (card <= 1) {
+                this.set('count', this.get('count') - 1);
+            } else if (card < 7) {
+                this.set('count', this.get('count') + 1);
+            }
+
+            this.set('nCards', this.get('nCards') + 1);
+        }
+    });
+
+    // User card
+    var CountView = Backbone.View.extend({
+        el: '#count',
+        events: {
+            'click button': 'resetCount'
+        },
+        initialize: function () {
+            this.$count = $(".count", this.$el);
+            this.model.on("change:count", this.render, this);
+        },
+        resetCount: function () {
+            this.model.set({'count': 0, 'nCards' : 0});
+        },
+        render: function () {
+            this.$count.text(this.model.get('count'));
+            return this;
+        }
+    });
+
+
+
+
+
     var dealer = new Dealer ();
     var dealerView = new DealerView({model: dealer});
     var user = new User ();
     var userView = new UserView({model: user});
+
+    var count = new Count();
+    var countView = new CountView({model: count});
 
     var actionView = new ActionView({dealer: dealer, user: user});
 
