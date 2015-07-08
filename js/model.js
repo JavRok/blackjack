@@ -126,7 +126,7 @@ var pair = [
 /***** PUT KEY BINDINGS TO A BACKBONE VIEW/MODEL **********/
 
     // Keyboard events: detect numbers pressed
-    var key0 = 48, numpad0 = 96;
+    var key0 = 48, numpad0 = 96, numpadSupr = 110;
 
     // Autofocus won't work on normal elements (not form)
     document.getElementById("dealer").focus();
@@ -160,15 +160,21 @@ var pair = [
         if (key >= numpad0 && key < numpad0+11) {
             card = key - numpad0;
         }
+        // Supr / . on Numpad Clears user cards.
+        if (key === numpadSupr) {
+            user.clear();
+            return;
+        }
+
+        if (dealer.get('card') > 0) {
+            player = document.activeElement;
+        } else {
+            player = document.getElementById("dealer");
+            document.getElementById("yours").focus();
+        }
 
         if (card > -1) {
             // Trigger click and highlight button
-            if (dealer.get('card') > 0) {
-                player = document.activeElement;
-            } else {
-                player = document.getElementById("dealer");
-                document.getElementById("yours").focus();
-            }
 
             var $button = $("button[value='"+card+"']", $(player));
             $button.trigger('click').addClass('clicked'); // .parent().focus();
@@ -180,6 +186,12 @@ var pair = [
                 $button.removeClass('clicked');
             }, 300);
 
+        }
+
+        // Supr key undoes last movement
+        if (key === 46) {
+            user.undoLast();
+            count.undoLast();
         }
 
 
@@ -236,7 +248,8 @@ var pair = [
             total: 0,
             nCards: 0,  // # cards
             soft: false, // hasAs
-            pairs: false
+            pairs: false,
+            last: 0
         },
         /*initialize: function () {
             this.on('change', function (model, options) {
@@ -253,13 +266,14 @@ var pair = [
                 this.set('soft', true);
                 card = 11;
             }
-
             // Detect pairs
             else if(nCards === 1 && card === total) {
                 this.set('pairs', true);
             } else {
                 this.set('pairs', false);
             }
+
+            this.set('last', card);
 
             total += card;
             if (total > 21 && this.get('soft')) {
@@ -273,6 +287,14 @@ var pair = [
 
         clear: function () {
             this.set({'total': 0, 'soft': false, 'pairs': false, 'nCards': 0});
+        },
+
+        undoLast: function () {
+            var last = this.get('last');
+            if (last) {
+                this.set('total', this.get('total') - last);
+                this.set('last', undefined);
+            }
         },
 
         toString: function () {
@@ -378,16 +400,28 @@ var pair = [
     var Count = Backbone.Model.extend({
         defaults: {
             count: 0,
-            nCards: 0
+            nCards: 0,
+            last: 0
         },
         addCard: function(card) {
             if (card <= 1) {
-                this.set('count', this.get('count') - 1);
+                this.set({'count': this.get('count') - 1, 'last': -1});
             } else if (card < 7) {
-                this.set('count', this.get('count') + 1);
+                this.set({'count': this.get('count') + 1, 'last': 1});
+            } else {
+                this.set('last', 0);
             }
 
             this.set('nCards', this.get('nCards') + 1);
+        },
+
+        // Undo last movement
+        undoLast: function() {
+            var last = this.get('last');
+            if (last !== undefined) {
+                this.set('count', this.get('count') - last);
+                this.set('last', undefined);
+            }
         }
     });
 
